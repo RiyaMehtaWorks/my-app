@@ -1,42 +1,35 @@
-// // pages/FlightPage.tsx
-// import FlightList from "../components/FlightList";
-
-// type Props = {
-//   destination: string;
-//   dates: string;
-//   passengers: number;
-//   nextStep: () => void;
-// };
-
-// function FlightPage({ destination, dates, passengers, nextStep }: Props) {
-//   console.log("FlightPage render");
-
-//   return (
-//     <div>
-//       <h2>Flights to {destination}</h2>
-//       <p>Dates: {dates}</p>
-//       <p>Passengers: {passengers}</p>
-
-//       <FlightList destination={destination} />
-
-//       <br />
-//       <button onClick={nextStep}>Proceed to Payment</button>
-//     </div>
-//   );
-// }
-
-// export default FlightPage;
-
 import { useBookingStore } from "../context/bookingStore";
 import FlightList from "../components/FlightList";
+import { useQuery } from "@tanstack/react-query";
 
 function FlightPage() {
   const destination = useBookingStore((s) => s.destination);
   const dates = useBookingStore((s) => s.dates);
   const passengers = useBookingStore((s) => s.passengers);
   const nextStep = useBookingStore((s) => s.nextStep);
+  const setCurrentStep = useBookingStore((s) => s.setCurrentStep);
 
-  console.log("FlightPage render");
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ["flights", destination, dates],
+    queryFn: async () => {
+      console.log("API CALLED");
+
+      //FAKE API
+      await new Promise((res) => setTimeout(res, 2000));
+
+      //FAKE RESPONSE
+      return [
+        { id: 1, name: `Flight A to ${destination}` },
+        { id: 2, name: `Flight B to ${destination}` },
+        { id: 3, name: `Flight C to ${destination}` },
+      ];
+    },
+    enabled: !!destination && !!dates,
+    staleTime: 1000 * 60 * 2,
+  });
+
+  if (isLoading) return <p>Loading Flights...</p>;
+  if (error) return <p>Error loading flights...</p>;
 
   return (
     <div>
@@ -48,6 +41,15 @@ function FlightPage() {
 
       <br />
       <button onClick={nextStep}>Proceed to Payment</button>
+      <br />
+      <button
+        onClick={() => {
+          setCurrentStep("search");
+        }}
+      >
+        Go Back
+      </button>
+      <button onClick={() => refetch()}>Manual Refetch</button>
     </div>
   );
 }

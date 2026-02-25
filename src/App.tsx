@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div style={{ padding: "30px" }}>
-      <h1>Travel Booking App (Zustand)</h1>
+      <h1>Travel Booking App </h1>
 
       {currentStep === "search" && <SearchPage />}
       {currentStep === "flights" && <FlightPage />}

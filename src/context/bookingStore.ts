@@ -11,6 +11,7 @@ type BookingState = {
   addPassenger: () => void;
   nextStep: () => void;
   resetBooking: () => void;
+  setCurrentStep: (step: BookingState["currentStep"]) => void;
 };
 
 export const useBookingStore = create<BookingState>((set) => ({
@@ -44,4 +45,6 @@ export const useBookingStore = create<BookingState>((set) => ({
       passengers: 1,
       currentStep: "search",
     }),
+
+  setCurrentStep: (step) => set({ currentStep: step }),
 }));

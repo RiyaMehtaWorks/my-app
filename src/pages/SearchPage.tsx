@@ -55,6 +55,7 @@
 
 // export default SearchPage;
 
+import { useEffect } from "react";
 import { useBookingStore } from "../context/bookingStore";
 
 function SearchPage() {
@@ -66,8 +67,6 @@ function SearchPage() {
   const setDates = useBookingStore((s) => s.setDates);
   const addPassenger = useBookingStore((s) => s.addPassenger);
   const nextStep = useBookingStore((s) => s.nextStep);
-
-  console.log("SearchPage render");
 
   return (
     <div>
