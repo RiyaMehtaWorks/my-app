@@ -1,11 +1,7 @@
-import FlightSearch from "./components/FlightSearch";
+import React from "react";
 
 const App = () => {
-  return (
-    <div>
-      <FlightSearch />
-    </div>
-  );
+  return <div>App</div>;
 };
 
 export default App;
