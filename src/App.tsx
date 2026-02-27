@@ -1,26 +1,26 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { lazy, Suspense } from "react";
-// import Home from "./pages/Home";
-// import Editor from "./pages/Editor";
+import { useState } from "react";
+import RestaurantList from "./components/RestaurantList";
 
-// Lazy imports
-const Home = lazy(() => import("./pages/Home"));
-const Editor = lazy(() => import("./pages/Editor"));
+const restaurants = [
+  { id: 1, name: "Veg Palace", price: 200, rating: 4.5 },
+  { id: 2, name: "Spicy Hub", price: 350, rating: 4.2 },
+  { id: 3, name: "Budget Bites", price: 150, rating: 3.9 },
+];
 
 export default function App() {
-  return (
-    <BrowserRouter>
-      <nav style={{ display: "flex", gap: "20px" }}>
-        <Link to="/">Home</Link>
-        <Link to="/editor">Editor</Link>
-      </nav>
+  const [dark, setDark] = useState(false);
+  const [filters] = useState({ price: 500, rating: 4 });
 
-      <Suspense fallback={<p>Loading...</p>}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/editor" element={<Editor />} />
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
+  return (
+    <div
+      style={{
+        background: dark ? "#222" : "#fff",
+        color: dark ? "#fff" : "#000",
+      }}
+    >
+      <button onClick={() => setDark(!dark)}>Toggle Theme</button>
+
+      <RestaurantList restaurants={restaurants} filters={filters} />
+    </div>
   );
 }
